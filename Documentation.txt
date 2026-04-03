@@ -113,3 +113,50 @@ Thrid run
   A note on the scores: Accuracy is high because 92% of cases are non-defaults. At a 0.5 decision threshold the model is conservative
   on flagging defaults — typical for this imbalanced dataset. AUC-PR (~0.19 vs 0.08 random baseline) reflects ~2.3x lift over chance,
   which is the right metric to compare against the MLP later.
+
+===============================================================================================================
+Thrid run
+===============================================================================================================
+
+  MLP Training Results                                                                                                                 
+                                                                                                                                       
+  Architecture Comparison (mlp_architecture_comparison.png)                                                                            
+                                                                                                                                       
+  ┌────────────────┬────────┬───────────────┐                                                                                          
+  │  Architecture  │   F1   │    AUC-PR     │                                                                                          
+  ├────────────────┼────────┼───────────────┤                                                                                          
+  │ (64,)          │ 0.2492 │ 0.2066        │               
+  ├────────────────┼────────┼───────────────┤
+  │ (128, 64)      │ 0.2434 │ 0.2105        │
+  ├────────────────┼────────┼───────────────┤                                                                                          
+  │ (256, 128, 64) │ 0.2500 │ 0.2201 ← best │
+  └────────────────┴────────┴───────────────┘                                                                                          
+                                                            
+  Activation: relu (AUC-PR 0.2201) beat tanh (0.2116)                                                                                  
+                                                            
+  Learning Rate: 0.01 (AUC-PR 0.2210) edged out 0.001; 0.1 collapsed (0.0807 — underfitting/oscillating)                               
+                                                            
+  Final Model — Validation Metrics                                                                                                     
+                                                            
+  ┌───────────────┬────────┐                                                                                                           
+  │    Metric     │ Score  │                                
+  ├───────────────┼────────┤
+  │ Accuracy      │ 0.6682 │
+  ├───────────────┼────────┤
+  │ Precision     │ 0.1523 │
+  ├───────────────┼────────┤                                                                                                           
+  │ Recall        │ 0.6807 │
+  ├───────────────┼────────┤                                                                                                           
+  │ F1            │ 0.2488 │                                
+  ├───────────────┼────────┤
+  │ AUC-PR        │ 0.2210 │
+  ├───────────────┼────────┤
+  │ Training time │ 23.4s  │
+  └───────────────┴────────┘                                                                                                           
+   
+  A few notes for your report:                                                                                                         
+  - The MLP has higher Recall (0.68 vs 0.19) but lower Precision than XGBoost — it casts a wider net, flagging many more potential
+  defaulters                                                                                                                           
+  - AUC-PR is slightly better (0.221 vs 0.187), making it the stronger model on the ranking metric
+  - Training was 3× slower than XGBoost (23s vs 7s) despite only 25 epochs, due to the large dense matrix operations on 215K × 194     
+  features

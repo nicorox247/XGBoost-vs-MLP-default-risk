@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# Virtual environment
+venv/
+
+# Dataset (large CSV files)
+home-credit-default-risk/
+
+# Processed data
+*.parquet
+
+# Trained models
+*.json
+
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
